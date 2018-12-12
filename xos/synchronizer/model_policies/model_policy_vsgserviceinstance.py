@@ -161,8 +161,8 @@ class VSGServiceInstancePolicy(TenantWithContainerPolicy):
         # there should only be one network private network, and its template should not be the management template
         lan_networks = [x for x in slice.networks.all() if
                         x.template.visibility == "private" and (not "management" in x.template.name)]
-        #if len(lan_networks) > 1:
-            #raise SynchronizerProgrammingError("The vSG slice should only have one non-management private network")
+        if len(lan_networks) > 1:
+            raise SynchronizerProgrammingError("The vSG slice should only have one non-management private network")
         if not lan_networks:
             raise SynchronizerProgrammingError("No lan_network")
         return lan_networks[0]
